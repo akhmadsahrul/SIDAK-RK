@@ -1,0 +1,23 @@
+.dashboard-card {
+    background: linear-gradient(to right, #4A90E2, #00C6FB);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dashboard-card i {
+    color: white;
+    margin-bottom: 10px;
+}
+
+.dashboard-card h5 {
+    font-size: 1.1rem;
+    font-weight: bold;
+}

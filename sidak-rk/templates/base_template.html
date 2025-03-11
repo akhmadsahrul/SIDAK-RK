@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}
+        
+    {% endblock %}</title>
+
+    <!-- Link Bootstrap  -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Link Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+     <!-- Link Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+     <!-- Link CSS -->
+     <link rel="stylesheet" href="{% static 'css/base_template.css' %}">
+     <link rel="stylesheet" href="{% static 'css/admin/dashboard_admin.css' %}">
+   
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg px-4 d-flex justify-content-between">
+        <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+        <h3 class="fw-bold">SIDAK-<span class="text-warning">RK</span></h3>
+        <div class="profile-menu" onclick="toggleDropdown()">
+            <span>Hai, Charysta</span>
+            <img src="https://storage.googleapis.com/a1aa/image/ZtKug95d0_FoXTPrEYP8Uf8j-rVKGWYHXpi5joBzLVk.jpg"
+                alt="User" class="rounded-circle" width="40">
+            <div class="dropdown-menu" id="dropdown">
+                <a href="#">Profile</a>
+                <a href="ganti_password.html">Settings</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="sidebar" id="sidebar">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a href="{% url 'dashboard_admin' %}" class="nav-link {% if 'dashboard_admin' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="" class="nav-link {% if 'data_karyawan' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fas fa-users"></i> Data Karyawan
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'data_ajuan' %}" class="nav-link {% if 'data_ajuan' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fas fa-file-alt"></i> Data Ajuan
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'history' %}" class="nav-link {% if 'history' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fas fa-history"></i> History Ajuan
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+
+    {% comment %} Isi Konten {% endcomment %}
+    <div class="content" id="content">
+        <div class="row g-4">
+            {% block content %}
+
+            {% endblock %}
+        </div>
+    </div>
+
+
+    <footer class="footer">
+        &copy; <span id="year"></span> Sidak-RK
+    </footer>
+
+    <script>
+        // sidebar
+        function toggleSidebar() {
+            let sidebar = document.getElementById("sidebar");
+            let content = document.getElementById("content");
+
+            if (sidebar.style.width === "250px") {
+                sidebar.style.width = "0";
+                sidebar.style.padding = "0";
+                content.style.marginLeft = "0";
+            } else {
+                sidebar.style.width = "250px";
+                sidebar.style.padding = "20px";
+                content.style.marginLeft = "260px";
+            }
+        }
+
+        // Fungsi untuk mengatur sidebar berdasarkan ukuran layar
+        function adjustSidebar() {
+            let sidebar = document.getElementById("sidebar");
+            let content = document.getElementById("content");
+
+            if (window.innerWidth > 768) {
+                sidebar.style.width = "250px";
+                sidebar.style.padding = "20px";
+                content.style.marginLeft = "260px";
+            } else {
+                sidebar.style.width = "0";
+                sidebar.style.padding = "0";
+                content.style.marginLeft = "0";
+            }
+        }
+        
+
+        // Panggil fungsi saat halaman dimuat
+        window.onload = adjustSidebar;
+
+        // Tambahkan event listener untuk menangani perubahan ukuran layar
+        window.onresize = adjustSidebar;
+
+        // doropdown Profile
+        function toggleDropdown() {
+            let dropdown = document.getElementById("dropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        }
+        window.onclick = function (event) {
+            if (!event.target.closest('.profile-menu')) {
+                document.getElementById("dropdown").style.display = "none";
+            }
+        }
+
+        // footer
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

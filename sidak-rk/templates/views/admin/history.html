@@ -1,0 +1,72 @@
+{% extends "base_template.html" %}
+{% block title %}History{% endblock %} 
+
+{%block content %}
+<h2 class="mb-4"><i class="fas fa-tachometer-alt me-2"></i>History Ajuan</h2>
+<!--isi konten  -->
+<div class="container bg-white p-4 rounded shadow">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex align-items-center">
+            <label for="entries" class="me-2 fw-bold">Tampilkan</label>
+            <select id="entries" class="form-select w-auto" onchange="filterEntries()">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            <span class="ms-2 fw-bold">Entri</span>
+        </div>
+        <div class="input-group w-25">
+            <span class="input-group-text"><i class="fas fa-search"></i></span>
+            <input type="text" id="searchInput" class="form-control" placeholder="Cari" onkeyup="searchTable()">
+        </div>
+    </div>
+    <table class="table table-bordered table-striped text-center" id="dataTable">
+        <thead class="table-primary">
+            <tr>
+                <th>NIK</th>
+                <th>Nama</th>
+                <th>Awal Cuti</th>
+                <th>Akhir Cuti</th>
+                <th>Status</th>
+                <th>Tipe</th>
+                <th>Detail</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>351509060300042</td>
+                <td>Akhmad S. A.</td>
+                <td>12-03-2024</td>
+                <td>15-03-2024</td>
+                <td><span class="badge bg-success">Disetujui</span></td>
+                <td>Cuti</td>
+                <td class="text-center">
+                    <button class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
+                </td>
+            </tr>
+            <tr>
+                <td>3515090603040012</td>
+                <td>Asyfa M.</td>
+                <td>11-01-2024</td>
+                <td>12-01-2024</td>
+                <td><span class="badge bg-danger">Ditolak</span></td>
+                <td>Sakit</td>
+                <td class="text-center">
+                    <button class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<script>
+    function searchTable() {
+        let input = document.getElementById("searchInput").value.toLowerCase();
+        let rows = document.querySelectorAll("#dataTable tbody tr");
+        rows.forEach(row => {
+            let text = row.innerText.toLowerCase();
+            row.style.display = text.includes(input) ? "" : "none";
+        });
+    }
+</script>
+{% endblock %}

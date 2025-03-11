@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Code</title>
+     <!-- link bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+     <!-- link Css -->
+     <link rel="stylesheet" href="{% static 'css/verify.css' %}">
+     <!-- link SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+</head>
+<body>
+
+    <a href="{% url 'forgotpassword' %}" class="back-btn" onclick="goBack()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+    </a>
+
+    <div class="card">
+        <h3 class="fw-bold">Periksa email Anda</h3>
+        <p>Kami mengirimkan tautan reset ke  <b id="email-display">contact@dscode...com</b><br>
+            Masukkan 5 digit kode yang disebutkan dalam email</p>
+        
+        <form id="verify-form">
+            <div class="code-inputs">
+                <input type="text" maxlength="1" class="code-input" required>
+                <input type="text" maxlength="1" class="code-input" required>
+                <input type="text" maxlength="1" class="code-input" required>
+                <input type="text" maxlength="1" class="code-input" required>
+                <input type="text" maxlength="1" class="code-input" required>
+            </div>
+            <button type="submit" id="verify-btn" class="btn w-100 btn-verify" disabled>
+                Konfirmasi
+            </button>
+        </form>
+    </div>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+
+        const inputs = document.querySelectorAll(".code-input");
+        const verifyBtn = document.getElementById("verify-btn");
+        const emailDisplay = document.getElementById("email-display");
+
+        // Cek apakah ada email yang tersimpan di localStorage
+        const savedEmail = localStorage.getItem("userEmail");
+        if (savedEmail) {
+            emailDisplay.textContent = savedEmail;
+        }
+
+        inputs.forEach((input, index) => {
+            input.addEventListener("input", (e) => {
+                if (e.target.value.length === 1) {
+                    e.target.classList.add("filled");
+                    if (index < inputs.length - 1) {
+                        inputs[index + 1].focus();
+                    }
+                } else {
+                    e.target.classList.remove("filled");
+                }
+                checkFilled();
+            });
+
+            input.addEventListener("keydown", (e) => {
+                if (e.key === "Backspace" && input.value.length === 0 && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+        });
+
+        function checkFilled() {
+            const allFilled = [...inputs].every(input => input.value.length === 1);
+            verifyBtn.disabled = !allFilled;
+        }
+
+        document.getElementById("verify-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            Swal.fire({
+                title: "Success!",
+                text: "Your code has been verified",
+                icon: "success",
+                confirmButtonColor: "#4C8BF5",
+                confirmButtonText: "OK",
+                backdrop: false 
+            }).then(() => {
+                window.location.href = "{% url 'resetpassword' %}";
+            });
+        });
+    </script>
+
+</body>
+</html>

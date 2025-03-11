@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- link bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- link  Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- link css -->
+    <link rel="stylesheet" href="{% static 'css/login.css' %}" />
+      <!-- link Sweet Alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    <div class="container-fluid p-0">
+        <div class="row g-0">
+            <div class="col-12 col-md-6 gradient-bg text-white text-center d-none d-md-flex flex-column align-items-center justify-content-center">
+                <h1 class="display-4 fw-bold">Selamat Datang Di</h1>
+                <h2 class="display-4 fw-bold">SIDAK-<span class="text-warning">RK</span></h2>
+            </div>
+            <div class="col-12 col-md-6 d-flex align-items-center justify-content-center p-5">
+                <div class="w-100 login-container" style="max-width: 400px;">
+                    <h2 class="display-5 fw-bold mb-4">Masuk</h2>
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <input type="email" class="form-control form-control-lg" placeholder="Email Address" id="email" required>
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <input type="password" class="form-control form-control-lg" placeholder="Password" id="password" required>
+                            <span class="position-absolute end-0 top-50 translate-middle-y me-3" style="cursor: pointer;" id="eyeIcon">
+                                <i class="fas fa-eye text-secondary"></i>
+                            </span>
+                        </div>
+                        <div class="mb-4 d-flex justify-content-end">
+                            <a href="{% url 'forgotpassword' %}" class="text-decoration-none custom-link">Lupa Kata Sandi?</a>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg w-100 custom-button">Masuk</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+            const eyeIconInner = eyeIcon.querySelector('i');
+            const loginForm = document.getElementById('loginForm');
+            
+            const accounts = {
+                "admin@sidak.com": { password: "admin123", redirect: "admin/dashboard_admin.html" },
+                "user@sidak.com": { password: "user123", redirect: "user/index.html" }
+            };
+            
+            eyeIcon.addEventListener('click', function () {
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    eyeIconInner.classList.remove('fa-eye');
+                    eyeIconInner.classList.add('fa-eye-slash');
+                } else {
+                    passwordInput.type = 'password';
+                    eyeIconInner.classList.remove('fa-eye-slash');
+                    eyeIconInner.classList.add('fa-eye');
+                }
+            });
+
+            loginForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                if (accounts[email] && accounts[email].password === password) {
+                    Swal.fire({
+                        title: "Login Berhasil!",
+                        icon: "success",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        window.location.href = accounts[email].redirect;
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Email atau Password salah!",
+                        icon: "error",
+                        confirmButtonText: "Coba Lagi"
+                    });
+                }
+            });
+        });
+    </script>
+   </body>
+  </html>

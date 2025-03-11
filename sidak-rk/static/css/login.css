@@ -1,0 +1,36 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.gradient-bg {
+    background: linear-gradient(to bottom, #393882, #A0E0E2);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.custom-button {
+    background-color: #7CB7E3;
+    border: none;
+}
+.custom-button:hover {
+    background-color: #7CDAE3;
+}
+.custom-link {
+    color: #007bff;
+}
+.custom-link:hover {
+    color: #DA2929;
+}
+@media (max-width: 768px) {
+    .gradient-bg {
+        display: none;
+    }
+    .login-container {
+        padding: 20px;
+    }
+    h2 {
+        font-size: 24px;
+    }
+}

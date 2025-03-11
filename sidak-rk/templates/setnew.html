@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set New Password</title>
+    <!-- link SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- link Css -->
+    <link rel="stylesheet" href="{% static 'css/setnew.css' %}">
+
+</head>
+<body>
+    <a href="{% url 'forgotpassword' %}" class="back-btn" onclick="goBack()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+    </a>
+
+    <div class="container">
+        <h2>Kata Sandi Baru</h2>
+        <p>Buat kata sandi baru. Pastikan itu berbeda dari yang sebelumnya untuk keamanan</p>
+        <div class="input-group">
+            <input type="password" id="newPassword" placeholder="Masukkan Password Baru">
+            <input type="password" id="confirmPassword" placeholder="Konfirmasi Password Baru">
+        </div>
+        <button class="btn" onclick="setPassword()">Kirim</button>
+    </div>
+
+    <script>
+        function setPassword() {
+            let newPassword = document.getElementById("newPassword").value;
+            let confirmPassword = document.getElementById("confirmPassword").value;
+
+            if (newPassword === "" || confirmPassword === "") {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Both password fields must be filled out.',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    backdrop: false
+                });
+            } else if (newPassword !== confirmPassword) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Passwords do not match!',
+                    icon: 'error',
+                    confirmButtonText: 'Try Again',
+                    backdrop: false
+                });
+            } else {
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Your password has been successfully changed.',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    backdrop: false
+                }).then(() => {
+                    window.location.href = '{% url 'login' %}'; 
+                });
+            }
+        }
+    </script>
+
+</body>
+</html>
