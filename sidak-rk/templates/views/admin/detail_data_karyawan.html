@@ -1,0 +1,234 @@
+{% extends "base_template.html" %}
+{% block title %}Detail Data Karyawan{% endblock %} 
+
+{% block content %}
+<h2 class="fw-bold mb-1">
+    <i class="fas fa-users"></i>Detail Data Karyawan
+</h2>
+<style>
+    .profile-img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 50%;  
+    }
+    .nav-tabs .nav-link.active {
+        background-color: #0d6efd;
+        color: white;
+        border-radius: 5px;
+    }
+</style>
+<!-- Tambahkan modal Bootstrap untuk menampilkan data karyawan -->
+<div class="container py-5">
+    <div class="card shadow-lg"> 
+        <div class="card-body">
+            <div class="row g-4">
+                <div class="col-md-3 text-center">
+                    <img src="https://storage.googleapis.com/a1aa/image/pdzGEAG6priCRwhpQSkdkFF0AxO9eMM5Qf_LBkKFAlQ.jpg"
+                        alt="Profile picture" class="profile-img">
+                    <h5 class="mt-3">CHACA PUTRI S.Kom</h5>
+                    <p class="text-muted">ID: 22080000235</p>
+                </div>
+                <div class="col-md-9">
+                    <ul class="nav nav-tabs" id="employeeTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="identity-tab" data-bs-toggle="tab"
+                                data-bs-target="#identity" type="button" role="tab">Identitas</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="kontak-tab" data-bs-toggle="tab"
+                                data-bs-target="#kontak" type="button" role="tab">Informasi Kontak</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="datasuami-tab" data-bs-toggle="tab"
+                                data-bs-target="#datasuami" type="button" role="tab">Data
+                                Suami/Istri</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="dataanak-tab" data-bs-toggle="tab"
+                                data-bs-target="#dataanak" type="button" role="tab">Data Anak</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="dokumen-tab" data-bs-toggle="tab"
+                                data-bs-target="#dokumen" type="button" role="tab">Data Dokumen</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content p-3">
+                        <div class="tab-pane fade show active" id="identity" role="tabpanel">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Nama</label>
+                                    <input type="text" class="form-control" value="">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Jabatan</label>
+                                    <input type="text" class="form-control" value="">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">NIK</label>
+                                    <input type="text" class="form-control" value="">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">ID Karyawan</label>
+                                    <input type="text" class="form-control" value="">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Nomor Induk Karyawan</label>
+                                    <input type="text" class="form-control" value="">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">NPWP</label>
+                                    <input type="text" class="form-control" value="">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Nomor BPJS</label>
+                                    <input type="text" class="form-control" value="">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Jenis Kelamin</label>
+                                    <input type="text" class="form-control" value="">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Tempat Tanggal Lahir</label>
+                                    <input type="text" class="form-control" value="">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Umur</label>
+                                    <input type="number" class="form-control" value="">
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="form-label">Alamat</label>
+                                    <input type="text" class="form-control" value="">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Tanggal Masuk</label>
+                                    <input type="date" class="form-control" value="">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Tanggal Keluar</label>
+                                    <input type="date" class="form-control" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="kontak" role="tabpanel">
+                            <div class="col-md-6">
+                                <label class="form-label">Nomor Tlp.</label>
+                                <input type="text" class="form-control" value="">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" value="">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Facebook</label>
+                                <input type="text" class="form-control" value="">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Instagram</label>
+                                <input type="text" class="form-control" value="">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Twitter/X</label>
+                                <input type="text" class="form-control" value="">
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="datasuami" role="tabpanel">
+                            <div class="col-md-6">
+                                <label class="form-label">Nama Suami/Istri</label>
+                                <input type="text" class="form-control" value="">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Tempat lahir</label>
+                                <input type="text" class="form-control" value="">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Tanggal Lahir</label>
+                                <input type="date" class="form-control" value="">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Pendidikan Trakhir </label>
+                                <input type="text" class="form-control" value="">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">No Telp. </label>
+                                <input type="number" class="form-control" value="">
+                            </div>
+                        </div>
+                        <!-- Data Anak -->
+                        <div class="tab-pane fade" id="dataanak" role="tabpanel">
+                            <div class="col-md-6">
+                                <label class="form-label">Jumlah Anak</label>
+                                <select id="jumlahAnak" class="form-select">
+                                    <option value="0">Pilih jumlah anak</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+
+                            <!-- Container untuk form anak -->
+                            <div id="formAnakContainer"></div>
+
+                            <script>
+                                document.getElementById("jumlahAnak").addEventListener("change", function () {
+                                    let jumlah = parseInt(this.value);
+                                    let container = document.getElementById("formAnakContainer");
+                                    container.innerHTML = ""; // Reset form saat pilihan berubah
+
+                                    for (let i = 1; i <= jumlah; i++) {
+                                        let form = `
+                                        <div class="row mt-3 border p-3 rounded">
+                                            <h5 class="mb-3">Data Anak ${i}</h5>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Anak Ke-</label>
+                                                <input type="text" class="form-control" value="${i}" readonly>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Nama Anak</label>
+                                                <input type="text" class="form-control">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Tempat Lahir</label>
+                                                <input type="text" class="form-control">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Tanggal Lahir</label>
+                                                <input type="date" class="form-control">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Pendidikan Terakhir</label>
+                                                <input type="text" class="form-control">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">No Telp</label>
+                                                <input type="number" class="form-control">
+                                            </div>
+                                        </div>
+                                    `;
+                                        container.innerHTML += form;
+                                    }
+                                });
+                            </script>
+                        </div>
+                        <!-- Dokumen -->
+                        <div class="tab-pane fade" id="dokumen" role="tabpanel">
+                            <div class="col-md-6">
+                                <label class="form-label">KTP</label>
+                                <input type="file" class="form-control" value="">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Surat SK</label>
+                                <input type="file" class="form-control" value="">
+                            </div>
+                        </div>
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock  %}

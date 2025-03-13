@@ -1,0 +1,79 @@
+{% extends "base_template.html" %}
+{% block title %}Ubah Sandi{% endblock %} 
+
+{%block content %}
+    <style>
+        .body {
+            background-color: #f8f9fa;
+            min-height: 80vh;
+            display: flex;
+            justify-content: center; 
+            align-items: center; 
+        }
+        
+        .password-container {
+            position: relative;
+        }
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #6c757d;
+        }
+        .toggle-password:hover {
+            color: #007bff;
+        }
+    </style>
+<div class="body">
+    <div class="card p-4 shadow-lg border-0 rounded-3" style="width: 100%; max-width: 800px;">
+        <h2 class="text-center fw-bold mb-4">Ubah Sandi</h2>
+        <form>
+            <!-- Sandi Lama -->
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Sandi Lama</label>
+                <div class="password-container">
+                    <input type="password" class="form-control" id="oldPassword" required>
+                    <i class="fas fa-eye toggle-password" onclick="togglePassword('oldPassword', this)"></i>
+                </div>
+            </div>
+            
+            <!-- Sandi Baru -->
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Sandi Baru</label>
+                <div class="password-container">
+                    <input type="password" class="form-control" id="newPassword" required>
+                    <i class="fas fa-eye toggle-password" onclick="togglePassword('newPassword', this)"></i>
+                </div>
+            </div>
+
+            <!-- Konfirmasi Sandi Baru -->
+            <div class="mb-4">
+                <label class="form-label fw-semibold">Konfirmasi Sandi Baru</label>
+                <div class="password-container">
+                    <input type="password" class="form-control" id="confirmPassword" required>
+                    <i class="fas fa-eye toggle-password" onclick="togglePassword('confirmPassword', this)"></i>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 fw-semibold">Simpan Perubahan</button>
+        </form>
+    </div>
+</div>
+
+    <script>
+        function togglePassword(fieldId, icon) {
+            let field = document.getElementById(fieldId);
+            if (field.type === "password") {
+                field.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                field.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        }
+    </script>
+{% endblock %}

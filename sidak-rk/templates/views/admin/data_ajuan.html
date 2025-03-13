@@ -1,4 +1,5 @@
 {% extends "base_template.html" %}
+{% load static %}
 {% block title %}Data Ajuan{% endblock %}
 
 
@@ -82,9 +83,9 @@
                                     <td><span class="badge ${item.status === 'Disetujui' ? 'bg-success' : 'bg-danger'}">${item.status}</span></td>
                                     <td>${item.bukti}</td>
                                     <td>
-                                        <button class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
-                                        <button class="btn btn-danger btn-sm"><i class="fas fa-times"></i></button>
-                                        <button class="btn btn-success btn-sm"><i class="fas fa-check"></i></button>
+                                      <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#detailModal">
+                                        <i class="fas fa-eye"></i>
+                                     </button>
                                     </td>
                                 </tr>
                             `;
@@ -144,4 +145,80 @@
                 });
             </script>
             
+            <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="detailModalLabel">Detail Ajuan</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="text-center mb-3">
+                                <a data-fancybox="gallery" href="{% static 'img/welcome.svg' %}">
+                                    <img src="{% static 'img/welcome.svg' %}" width="100" height="100" alt="Profile Picture" class="cursor-pointer">
+                                </a>
+                            </div>
+                            
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <th class="bg-light">Nama</th>
+                                            <td>Akhmad Sahrul Amin</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="bg-light">NIK</th>
+                                            <td>351509060300042</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="bg-light">Jabatan</th>
+                                            <td>Direktur Keuangan</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="bg-light">Tipe Ajuan</th>
+                                            <td>Sakit</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="bg-light">Alasan</th>
+                                            <td>Sakit</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="bg-light">Awal Cuti</th>
+                                            <td>12-03-2024</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="bg-light">Akhir Cuti</th>
+                                            <td>15-03-2024</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="bg-light">Tanggal Approve</th>
+                                            <td>11-03-2024</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="bg-light">Status Ajuan</th>
+                                            <td>
+                                                <select class="form-select text-success" id="statusAjuan">
+                                                    <option value="disetujui" class="text-success">Disetujui</option>
+                                                    <option value="ditolak" class="text-danger">Ditolak</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <th class="bg-light">Catatan</th>
+                                            <td>
+                                                <textarea class="form-control" id="catatan" rows="3" placeholder="Tambahkan catatan..."></textarea>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal"><i class="fa fa-paper-plane"></i>kirim</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        </div>
+                    </div>
+                </div>
+
 {% endblock %}

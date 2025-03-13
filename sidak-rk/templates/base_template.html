@@ -31,7 +31,7 @@
                 alt="User" class="rounded-circle" width="40">
             <div class="dropdown-menu" id="dropdown">
                 <a href="#">Profile</a>
-                <a href="ganti_password.html">Settings</a>
+                <a href="{% url 'ubah_katasandi' %}">Settings</a>
                 <a href="#">Logout</a>
             </div>
         </div>
@@ -45,7 +45,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link {% if 'data_karyawan' in request.resolver_match.url_name %}active{% endif %}">
+                <a href="{% url 'data_karyawan' %}" class="nav-link {% if 'data_karyawan' in request.resolver_match.url_name %}active{% endif %}">
                     <i class="fas fa-users"></i> Data Karyawan
                 </a>
             </li>
@@ -57,6 +57,11 @@
             <li class="nav-item">
                 <a href="{% url 'history' %}" class="nav-link {% if 'history' in request.resolver_match.url_name %}active{% endif %}">
                     <i class="fas fa-history"></i> History Ajuan
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'data_akun' %}" class="nav-link {% if 'data_akun' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="fa fa-user-plus"></i>Buat Akun
                 </a>
             </li>
             
