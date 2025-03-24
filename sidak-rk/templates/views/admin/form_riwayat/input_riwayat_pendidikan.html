@@ -1,0 +1,197 @@
+{% extends "base_template.html" %}
+{% load static %}
+{% block title %}Data Akun{% endblock %}
+{% block content %}
+<h2 class="mb-4"><i class="fas fa-tachometer-alt me-2"></i>Data Akun</h2>
+<div class="container bg-white p-4 rounded shadow">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3">
+        <div class="d-flex align-items-center mb-2 mb-md-0">
+            <label for="entries" class="me-2 fw-bold">Tampilkan</label>
+            <select id="entries" class="form-select w-auto" onchange="updateTable()">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+            </select>
+        </div>
+        <div class="input-group w-50 mb-2 mb-md-0">
+           
+            <input type="text" id="searchInput" class="form-control" placeholder="Cari" onkeyup="searchTable()">
+        </div>
+     
+            <button class="btn btn-success btn-sm" onclick="openModal()">
+                <i class="fa fa-plus"></i> Input Data
+            </button>
+      
+    </div>
+    
+    <table class="table table-bordered table-striped text-center" id="dataTable">
+        <thead class="table-primary">
+            <tr>
+                <th>NIK</th>
+                <th>Nama</th>
+                <th>Email</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data akan diisi melalui JavaScript -->
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-between align-items-center">
+        <span id="info"></span>
+        <nav>
+            <ul class="pagination" id="pagination"></ul>
+        </nav>
+    </div>
+</div>
+
+<script>
+    const data = [
+        { nik: "351509060300042", nama: "Akhmad S. A.", email: "akhmad@gmail.com" },
+        { nik: "351509060300043", nama: "Asyfa M.", email: "asyfa@gmail.com" },
+        { nik: "351509060300044", nama: "Budi S.", email: "budi@gmail.com" },
+        { nik: "351509060300045", nama: "Citra L.", email: "citra@gmail.com" },
+        { nik: "351509060300046", nama: "Dewi R.", email: "dewi@gmail.com" },
+        { nik: "351509060300047", nama: "Eka P.", email: "eka@gmail.com" },
+        { nik: "351509060300048", nama: "Fajar N.", email: "fajar@gmail.com" },
+        { nik: "351509060300049", nama: "Gita S.", email: "gita@gmail.com" },
+        { nik: "351509060300050", nama: "Hadi W.", email: "hadi@gmail.com" },
+        { nik: "351509060300051", nama: "Indah K.", email: "indah@gmail.com" }
+    ];
+    
+    let currentPage = 1;
+    let rowsPerPage = 5;
+    
+    function displayTable() {
+        const tableBody = document.querySelector("#dataTable tbody");
+        tableBody.innerHTML = "";
+        
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        const filteredData = data.slice(start, end);
+        
+        filteredData.forEach(row => {
+            const tr = `<tr>
+                <td>${row.nik}</td>
+                <td>${row.nama}</td>
+                <td>${row.email}</td>
+                <td><button class='btn btn-danger btn-sm'><i class='fas fa-trash'></i></button></td>
+            </tr>`;
+            tableBody.innerHTML += tr;
+        });
+        updatePagination();
+        updateInfo();
+    }
+    
+    function updatePagination() {
+        const pagination = document.querySelector("#pagination");
+        pagination.innerHTML = "";
+        const totalPages = Math.ceil(data.length / rowsPerPage);
+        
+        for (let i = 1; i <= totalPages; i++) {
+            pagination.innerHTML += `<li class='page-item ${i === currentPage ? "active" : ""}'>
+                <a class='page-link' href='#' onclick='changePage(${i})'>${i}</a>
+            </li>`;
+        }
+    }
+    
+    function updateInfo() {
+        const info = document.querySelector("#info");
+        info.innerText = `Menampilkan ${Math.min(rowsPerPage, data.length)} dari ${data.length} entri`;
+    }
+    
+    function changePage(page) {
+        currentPage = page;
+        displayTable();
+    }
+    
+    function updateTable() {
+        rowsPerPage = parseInt(document.querySelector("#entries").value);
+        currentPage = 1;
+        displayTable();
+    }
+    
+    function searchTable() {
+        const input = document.querySelector("#searchInput").value.toLowerCase();
+        const tableBody = document.querySelector("#dataTable tbody");
+        tableBody.innerHTML = "";
+        
+        const filteredData = data.filter(row => 
+            row.nik.toLowerCase().includes(input) ||
+            row.nama.toLowerCase().includes(input) ||
+            row.email.toLowerCase().includes(input)
+        );
+        
+        filteredData.slice(0, rowsPerPage).forEach(row => {
+            const tr = `<tr>
+                <td>${row.nik}</td>
+                <td>${row.nama}</td>
+                <td>${row.email}</td>
+                <td><button class='btn btn-danger btn-sm'><i class='fas fa-trash'></i></button></td>
+            </tr>`;
+            tableBody.innerHTML += tr;
+        });
+        
+        updatePagination();
+        updateInfo();
+    }
+    
+    displayTable();
+</script>
+
+<div class="modal fade" id="inputDataModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Tambah Akun Karyawan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="pilihan" class="form-label">Pilihan</label>
+                        <select id="pilihan" class="form-select">
+                            <option>Pilihan 1...</option>
+                        </select>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="nama" class="form-label">Nama</label>
+                            <input type="text" id="nama" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="nik" class="form-label">NIK</label>
+                            <input type="text" id="nik" class="form-control">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" id="email" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirm-password" class="form-label">Confirm Password</label>
+                        <input type="password" id="confirm-password" class="form-control">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary">Tambah</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openModal() {
+        var modal = new bootstrap.Modal(document.getElementById('inputDataModal'));
+        modal.show();
+    }
+</script>
+
+{% endblock  %}

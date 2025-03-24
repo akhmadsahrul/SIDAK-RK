@@ -1,0 +1,609 @@
+{% extends "base_template.html" %}
+{% block title %}Edit Data Karyawan{% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="container bg-white p-4 rounded shadow-lg mb-3">
+    <div class="row">
+        <h2 class="fw-bold mb-3">Input Profile </h2>
+
+        
+
+
+        <!-- Profile Sidebar -->
+        <div class="col-md-4 text-center mb-3">
+            <div class="card p-4 shadow-sm">
+                <!-- Foto Profil -->
+                <form method="POST" enctype="multipart/form-data" action="{% url 'input_data_karyawan' %}">
+                    {% csrf_token %}
+                    <div class="position-relative d-inline-block">
+                        <img id="profileImage"
+                            src="{% if karyawan.foto_profile %}{{ karyawan.foto_profile.url }}{% else %}{% static 'img/default.png' %}{% endif %}"
+                            alt="Profile Picture" class="rounded-circle shadow mb-4" width="150" height="150"
+                            style="object-fit: cover;">
+
+                        <!-- Input Upload -->
+                        <input type="file" name="foto_profile" id="profileutama" accept="image/*" class="d-none">
+                        <!-- Tombol Edit -->
+                        <label for="profileutama"
+                            class="btn btn-light btn-sm rounded-circle position-absolute start-50 translate-middle-x bottom-0"
+                            style="transform: translate(25px, -20px) !important; background-color: #fff; padding: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
+                            <i class="fas fa-edit fs-5 text-dark"></i>
+                        </label>
+                    </div>
+
+            </div>
+        </div>
+
+        <!-- Profile Details -->
+        <div class="col-md-8">
+            <div class="card p-4 shadow-sm">
+                {% comment %} Profile 1 {% endcomment %}
+                <div id="profil-1">
+                    <ul class="nav nav-tabs mb-3 d-flex flex-nowrap">
+                        <li class="nav-item"><a class="nav-link active" href="#" data-target="identitas">Identitas
+                                Karyawan</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" data-target="kontak">Informasi Kontak</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" data-target="data_suami_istri">Data
+                                Suami/Istri</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" data-target="data_anak">Data Anak</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" data-target="dokumen">Dokumen</a></li>
+                    </ul>
+
+
+                    <!-- Halaman Identitas Karyawan -->
+                    <div class="tab-content active" id="identitas">
+                        <h4 class="mb-3"><i class="fas fa-id-badge"></i> Identitas Karyawan</h4>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="nama" class="form-label">Nama</label>
+                                <input type="text" class="form-control" name="nama" id="nama"
+                                    value="{{ request.POST.nama|default_if_none:'' }}"  required oninput="this.value = this.value.toUpperCase()">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="jabatan" class="form-label">Jabatan</label>
+                                <select class="form-control" name="jabatan" id="jabatan" required>
+                                    <option value="" disabled selected>-- Pilih Jabatan --</option>
+                                    {% for jabatan in daftar_jabatan %}
+                                        <option value="{{ jabatan }}" {% if request.POST.jabatan == jabatan %}selected{% endif %}>
+                                            {{ jabatan }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="nik" class="form-label">NIK</label>
+                                <input type="number" class="form-control" name="nik" id="nik" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="no_induk_karyawan" class="form-label">No Induk Karyawan</label>
+                                <input type="number" class="form-control" name="no_induk_karyawan"
+                                    id="no_induk_karyawan" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="npwp" class="form-label">NPWP</label>
+                                <input type="number" class="form-control" name="npwp" id="npwp">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="no_bpjs" class="form-label">Nomor BPJS</label>
+                                <input type="number" class="form-control" name="no_bpjs" id="no_bpjs">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
+                                <select class="form-control" name="jenis_kelamin" id="jenis_kelamin" required>
+                                    <option value="">-- Pilih Jenis Kelamin --</option>
+                                    <option value="Laki-laki">Laki-laki</option>
+                                    <option value="Perempuan">Perempuan</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="tempat_lahir" class="form-label">Tempat Lahir</label>
+                                <input type="text" class="form-control" name="tempat_lahir" id="tempat_lahir" required oninput="this.value = this.value.toUpperCase()">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="tanggal_lahir" class="form-label">Tanggal Lahir</label>
+                                <input type="date" id="tanggal_lahir" name="tanggal_lahir" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="umur" class="form-label">Umur</label>
+                                <input type="text" id="umur" name="umur" class="form-control" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="alamat" class="form-label">Alamat</label>
+                                <textarea class="form-control" name="alamat" id="alamat" rows="3"
+                                    value="{{ request.POST.jabatan|default_if_none:'' }}"  required oninput="this.value = this.value.toUpperCase()"></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="status_karyawan" class="form-label">Status Karyawan</label>
+                                <select class="form-control" name="status_karyawan" id="status_karyawan" required>
+                                    <option value="Aktif" selected>Aktif</option>
+                                    <option value="Tidak Aktif">Tidak Aktif</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="tanggal_masuk" class="form-label">Tanggal Masuk</label>
+                                <input type="date" class="form-control" name="tanggal_masuk" id="tanggal_masuk"
+                                    required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="tanggal_keluar" class="form-label">Tanggal Keluar</label>
+                                <input type="date" class="form-control" name="tanggal_keluar" id="tanggal_keluar">
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end mt-4">
+                            <button type="reset" class="btn btn-secondary me-2">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                        </form>
+                    </div>
+
+                    <!-- Halaman Informasi Kontak -->
+                    <div class="tab-content" id="kontak">
+                        <h4 class="mb-3"><i class="fas fa-phone"></i> Informasi Kontak</h4>
+                        <form method="POST" action="{% url 'input_kontak_karyawan' %}">
+                            {% csrf_token %}
+                        
+                            {% if messages %}
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function() {
+                                    {% for message in messages %}
+                                        Swal.fire({
+                                            icon: "{% if message.tags == 'success' %}success{% else %}error{% endif %}",
+                                            title: "{% if message.tags == 'success' %}Berhasil!{% else %}Gagal!{% endif %}",
+                                            text: "{{ message }}",
+                                            confirmButtonText: "OK"
+                                        });
+                                    {% endfor %}
+                                });
+                            </script>
+                            {% endif %}
+
+                            <div class="row g-3">
+                                <!-- Pilih Karyawan -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Pilih Karyawan</label>
+                                    <select id="selectKaryawanKontak" class="form-control select2" name="karyawan_kontak" required>
+                                        <option value="" disabled selected>-- Pilih Karyawan --</option>
+                                        {% for karyawan in karyawan_list %}
+                                        <option value="{{ karyawan.id }}">{{ karyawan.nama }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                        
+                                <!-- Email -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" name="email" placeholder="Masukkan email" required>
+                                </div>
+                        
+                                <!-- No. Telepon -->
+                                <div class="col-md-6">
+                                    <label class="form-label">No. Telepon</label>
+                                    <input type="tel" class="form-control" name="no_telepon" placeholder="Masukkan no. telepon" required>
+                                </div>
+                        
+                                <!-- Instagram -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Instagram</label>
+                                    <input type="text" class="form-control" name="instagram" placeholder="Masukkan username Instagram">
+                                </div>
+                        
+                                <!-- Facebook -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Facebook</label>
+                                    <input type="text" class="form-control" name="facebook" placeholder="Masukkan username Facebook">
+                                </div>
+                        
+                                <!-- Twitter -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Twitter</label>
+                                    <input type="text" class="form-control" name="twitter" placeholder="Masukkan username Twitter">
+                                </div>
+                            </div>
+                        
+                            <!-- Tombol Simpan -->
+                            <button type="submit" class="btn btn-primary mt-3">Simpan</button>
+                        </form> 
+                    </div>
+
+                    {% comment %} Informasi Suami {% endcomment %}
+                    <div class="tab-content" id="data_suami_istri">
+                        <h4 class="mb-3"><i class="fas fa-user"></i> Data Suami/Istri</h4>
+                        <form method="POST" enctype="multipart/form-data" action="{% url 'input_suami_istri' %}">
+                            {% csrf_token %}
+                        
+                             <!-- Notifikasi -->
+                            {% if messages %}
+                                <script>
+                                    document.addEventListener("DOMContentLoaded", function() {
+                                        {% for message in messages %}
+                                            Swal.fire({
+                                                icon: "{% if message.tags == 'success' %}success{% else %}error{% endif %}",
+                                                title: "{% if message.tags == 'success' %}Berhasil!{% else %}Gagal!{% endif %}",
+                                                text: "{{ message }}",
+                                                confirmButtonText: "OK",
+                                                timer: 10000,  
+                                                timerProgressBar: true
+                                            });
+                                        {% endfor %}
+                                    });
+                                </script>
+                            {% endif %}
+
+                            <div class="row g-3">
+                                <div class="d-flex flex-column align-items-center position-relative">
+                                    <!-- Gambar Profil -->
+                                    <img id="profildatasuami" src="{% static 'img/default.png' %}" alt="Foto Profil"
+                                        class="rounded-circle border shadow-sm"
+                                        style="width: 150px; height: 150px; object-fit: cover;">
+                        
+                                    <!-- Input File (Hidden) -->
+                                    <input type="file" id="profiledatasuami" name="foto" accept="image/*" class="d-none"
+                                        onchange="previewImage(event)">
+                        
+                                    <!-- Tombol Edit Foto -->
+                                    <label for="profiledatasuami" class="btn btn-light btn-sm position-absolute"
+                                        style="bottom: 0; right: 0; transform: translate(-150px, -50px); padding: 8px;">
+                                        <i class="fas fa-edit fs-5 text-dark"></i> Edit Foto
+                                    </label>
+                                </div>
+                        
+                                <!-- Pilih Karyawan -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Pilih Karyawan</label>
+                                    <select id="selectKaryawanSuami" class="form-control select2" name="karyawan_suami" required>
+                                        <option value="" disabled selected>-- Pilih Karyawan --</option>
+                                        {% for karyawan in karyawan_list %}
+                                        <option value="{{ karyawan.id }}">{{ karyawan.nama }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                        
+                                {% comment %} Nama {% endcomment %}
+                                <div class="col-md-6">
+                                    <label class="form-label">Nama</label>
+                                    <input type="text" class="form-control" name="nama" id="nama" placeholder="Masukkan Nama" required oninput="this.value = this.value.toUpperCase()">
+                                </div>
+
+                                {% comment %} Tampat Lahir {% endcomment %}
+                                <div class="col-md-6">
+                                    <label class="form-label">Tempat Lahir</label>
+                                    <input type="text" class="form-control" name="tempat_lahir" id="tempat_lahir" placeholder="Masukkan Tempat Lahir" required oninput="this.value = this.value.toUpperCase()">
+                                </div>
+                                
+                        
+                                <!-- Tanggal Lahir -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Tanggal Lahir</label>
+                                    <input type="date" class="form-control" name="tanggal_lahir" required>
+                                </div>
+                        
+                                <!-- Pendidikan Terakhir -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Pendidikan Terakhir</label>
+                                    <select class="form-control" name="pendidikan_terakhir" required>
+                                        <option value="" disabled selected>-- Pilih Pendidikan Terakhir --</option>
+                                        <option value="SD">SD</option>
+                                        <option value="SMP">SMP</option>
+                                        <option value="SMA">SMA</option>
+                                        <option value="D3">D1</option>
+                                        <option value="D3">D2</option>
+                                        <option value="D3">D3</option>
+                                        <option value="D3">D4</option>
+                                        <option value="S1">S1</option>
+                                        <option value="S2">S2</option>
+                                        <option value="S3">S3</option>
+                                    </select>
+                                </div>
+                                
+                        
+                                <!-- No Telepon -->
+                                <div class="col-md-6">
+                                    <label class="form-label">No Telp.</label>
+                                    <input type="text" class="form-control" name="no_telp" placeholder="Masukkan Nomor Telepon" required>
+                                </div>
+                            </div>
+                        
+                            <button type="submit" class="btn btn-primary mt-3">Simpan</button>
+                        </form>
+                        
+                        
+                    </div>
+
+                    {% comment %} data anak {% endcomment %}
+                    <div class="tab-content" id="data_anak">
+                        <h4 class="mb-3"><i class="fas fa-user"></i> Data Anak</h4>
+
+                        <form id="anakForm" method="POST" enctype="multipart/form-data" action="{% url 'input_data_anak' %}">
+                            {% csrf_token %}
+                        
+                            <div class="row">
+                                <!-- Pilih Karyawan -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Pilih Karyawan</label>
+                                    <select id="selectAnakKaryawan" class="form-control select2" name="karyawan" required>
+                                        <option value="" disabled selected>-- Pilih Karyawan --</option>
+                                        {% for karyawan in karyawan_list %}
+                                        <option value="{{ karyawan.id }}">{{ karyawan.nama }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                        
+                                <!-- Jumlah Anak -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Jumlah Anak</label>
+                                    <select id="jumlahAnak" name="jumlah_anak" class="form-control">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                    </select>
+                                    
+                                </div>
+                            </div>
+                        
+                            <!-- Form Anak -->
+                            <div id="anakContainer" class="mt-3">
+                                <!-- Form anak akan ditambahkan di sini -->
+                            </div>
+                        
+                            <button type="submit" class="btn btn-primary mt-3">Simpan</button>
+                        </form>
+                        
+                        
+                        
+                    </div>
+                    </div>
+
+                    {% comment %} Dokumen {% endcomment %}
+                    <div class="tab-content" id="dokumen">
+                        <h4 class="mb-3"><i class="fa fa-file-contract"></i>Dokumen</h4>
+                        <div class="row g-3">
+
+                            <form method="POST" enctype="multipart/form-data" action="{% url 'input_dokumen' %}">
+                                {% csrf_token %}
+                            
+                                <div class="mb-3">
+                                    <label class="form-label">Pilih Karyawan</label>
+                                    <select id="selectDokumenKaryawan" class="form-control select2" name="karyawan" required>
+                                        <option value="" disabled selected>-- Pilih Karyawan --</option>
+                                        {% for karyawan in karyawan_list %}
+                                        <option value="{{ karyawan.id }}">{{ karyawan.nama }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            
+                                <div class="row">
+                                    <!-- Kartu Keluarga -->
+                                    <div class="col-md-6">
+                                        <label class="form-label">Kartu Keluarga</label>
+                                        <input type="file" class="form-control" accept="image/*" name="kartu_keluarga" id="kkUpload" required>
+                                        <img id="kkPreview" src="" alt="Preview Kartu Keluarga" class="img-thumbnail mt-2 d-none" style="width: 80%;">
+                                    </div>
+                            
+                                    <!-- KTP -->
+                                    <div class="col-md-6">
+                                        <label class="form-label">KTP</label>
+                                        <input type="file" class="form-control" accept="image/*" name="ktp" id="ktpUpload" required>
+                                        <img id="ktpPreview" src="" alt="Preview KTP" class="img-thumbnail mt-2 d-none" style="width: 80%;">
+                                    </div>
+                            
+                                    <!-- Kartu SK -->
+                                    <div class="col-md-6">
+                                        <label class="form-label">Kartu SK</label>
+                                        <input type="file" class="form-control" accept="image/*" name="dokumen_sk" id="skUpload" required>
+                                        <img id="skPreview" src="" alt="Preview SK" class="img-thumbnail mt-2 d-none" style="width: 80%;">
+                                    </div>
+                                </div>
+                            
+                                <button type="submit" class="btn btn-primary mt-3">Upload Dokumen</button>
+                            </form>
+                            
+
+                        </div>
+                    </div>
+                </div>
+
+                {% comment %} End Profile 1 {% endcomment %}
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+
+<script>
+    // Preview pada Dokumen
+    function previewImage(inputId, previewId) {
+        document.getElementById(inputId).addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const preview = document.getElementById(previewId);
+                    preview.src = e.target.result;
+                    preview.classList.remove("d-none");
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    // Panggil fungsi untuk setiap input
+    previewImage("kkUpload", "kkPreview");
+    previewImage("ktpUpload", "ktpPreview");
+    previewImage("skUpload", "skPreview");
+
+
+    $(document).ready(function () {
+        $("button[data-target-profile]").click(function () {
+            let target = $(this).data("target-profile");
+            $(".profile-section").addClass("d-none");
+            $("#" + target).removeClass("d-none");
+        });
+    });
+
+    //Selection Profile 2
+    $(document).ready(function () {
+        $("a[data-target-profile]").click(function (e) {
+            e.preventDefault(); // Hindari reload halaman
+            let target = $(this).data("target-profile");
+
+            // Sembunyikan semua profile section
+            $(".profile-section").addClass("d-none");
+
+            // Tampilkan hanya elemen yang dipilih
+            $("#" + target).removeClass("d-none");
+
+            // Update tampilan tab yang aktif
+            $("a[data-target-profile]").removeClass("active");
+            $(this).addClass("active");
+        });
+    });
+
+    // Modal Input data riwayat
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".btn-load-modal").forEach(button => {
+            button.addEventListener("click", function () {
+                let modalURL = this.getAttribute("data-url");
+
+                fetch(modalURL)
+                    .then(response => response.text())
+                    .then(html => {
+                        document.getElementById("modalContainer").innerHTML = html;
+
+                        // Tunggu hingga elemen modal termuat di DOM
+                        setTimeout(() => {
+                            let modalElement = document.querySelector(
+                                ".modal.fade");
+                            if (modalElement) {
+                                let modal = new bootstrap.Modal(modalElement);
+                                modal.show();
+                            }
+                        }, 100);
+                    })
+                    .catch(error => console.error("Gagal memuat modal:", error));
+            });
+        });
+    });
+        
+    // Umur Otomatis
+    document.getElementById("tanggal_lahir").addEventListener("change", function() {
+        let tanggalLahir = new Date(this.value);
+        let today = new Date();
+    
+        if (!isNaN(tanggalLahir)) {
+            let ageYears = today.getFullYear() - tanggalLahir.getFullYear();
+            let ageMonths = today.getMonth() - tanggalLahir.getMonth();
+    
+            if (ageMonths < 0) {
+                ageYears--;
+                ageMonths += 12;
+            }
+    
+            document.getElementById("umur").value = ageYears + " Tahun " + ageMonths + " Bulan";
+        } else {
+            document.getElementById("umur").value = "";
+        }
+    });
+</script>
+
+{% comment %} Api Data Karyawan {% endcomment %}
+<script>
+    $(document).ready(function () {
+    
+        // Select2 untuk Informasi Kontak
+        $("#selectKaryawanKontak").select2({
+            placeholder: "Pilih Karyawan...",
+            allowClear: true,
+            minimumInputLength: 0,
+            ajax: {
+                url: "/api/karyawan/",
+                dataType: "json",
+                delay: 250,
+                data: function (params) {
+                    return { search: params.term || "" };
+                },
+                processResults: function (data) {
+                    console.log("Data Karyawan Kontak:", data);
+                    return { results: data.results };
+                },
+                cache: true
+            }
+        });
+    
+        // Select2 untuk Data Suami
+        $("#selectKaryawanSuami").select2({
+            placeholder: "Pilih Karyawan...",
+            allowClear: true,
+            minimumInputLength: 0,
+            ajax: {
+                url: "/api/karyawan/",
+                dataType: "json",
+                delay: 250,
+                data: function (params) {
+                    return { search: params.term || "" };
+                },
+                processResults: function (data) {
+                    console.log("Data Karyawan Suami:", data);
+                    return { results: data.results };
+                },
+                cache: true
+            }
+        });
+        // Selext 2 Anak Karyawan
+        $("#selectAnakKaryawan").select2({
+            placeholder: "Pilih Karyawan...",
+            allowClear: true,
+            minimumInputLength: 0,
+            ajax: {
+                url: "/api/karyawan/",
+                dataType: "json",
+                delay: 250,
+                data: function (params) {
+                    return { search: params.term || "" };
+                },
+                processResults: function (data) {
+                    console.log("Data Karyawan Suami:", data);
+                    return { results: data.results };
+                },
+                cache: true
+            }
+        });
+
+        $("#selectDokumenKaryawan").select2({
+            placeholder: "Pilih Karyawan...",
+            allowClear: true,
+            minimumInputLength: 0,
+            ajax: {
+                url: "/api/karyawan/",
+                dataType: "json",
+                delay: 250,
+                data: function (params) {
+                    return { search: params.term || "" };
+                },
+                processResults: function (data) {
+                    console.log("Data Karyawan Suami:", data);
+                    return { results: data.results };
+                },
+                cache: true
+            }
+        });
+    
+    });
+    
+</script>
+
+<div id="modalContainer"></div>
+{% endblock  %}

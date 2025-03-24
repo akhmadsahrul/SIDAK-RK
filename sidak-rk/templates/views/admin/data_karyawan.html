@@ -1,5 +1,6 @@
 {% extends "base_template.html" %}
-{% block title %}Data Karyawan{% endblock %} 
+{% block title %}Data Karyawan{% endblock %}
+{% load static %}}
 
 {% block content %}
 <h2 class="fw-bold">
@@ -15,7 +16,7 @@
                 <option value="10">10</option>
                 <option value="25">25</option>
             </select>
-          
+
             <label for="statusFilter" class="ms-3">Filter:</label>
             <select id="statusFilter" class="form-select w-auto d-inline-block">
                 <option value="">Semua</option>
@@ -26,32 +27,70 @@
         <div class="col-md-6 col-12 text-md-end">
             <div class="input-group d-flex gap-4">
                 <input type="text" id="search" class="form-control" placeholder="Cari...">
-                <a href="inputdata_karyawan.html">
+                <a href="{% url 'input_data_karyawan' %}">
                     <button class="btn btn-success btn-sm"><i class="fa fa-plus"></i> Input Data</button>
                 </a>
             </div>
         </div>
-        
-        
-        
     </div>
+
+    {% if messages %}
+        <script>
+            {% for message in messages %}
+            Swal.fire({
+                icon: "{% if message.tags == 'success' %}success{% else %}error{% endif %}",
+                title: "{% if message.tags == 'success' %}Berhasil!{% else %}Gagal!{% endif %}",
+                text: "{{ message }}",
+                showConfirmButton: false,
+                timer: 3000
+            });
+            {% endfor %}
+        </script>
+    {% endif %}
+
+
     <div class="table-responsive">
-        
         <table class="table table-bordered table-hover text-center" id="karyawanTable">
-            <thead class="table-dark">
+            <thead class="table-primary fw-bold">
                 <tr>
-                    <th>NIK</th>
-                    <th>Nama</th>
-                    <th>Jabatan</th>
-                    <th>Status</th>
-                    <th>Aksi</th>
+                    <td>NIK</td>
+                    <td>NAMA</td>
+                    <td>JABATAN</td>
+                    <td>STATUS</td>
+                    <td>AKSI</td>
                 </tr>
             </thead>
             <tbody id="tableBody">
-                <!-- Data akan diisi oleh JavaScript -->
+                {% for karyawan in data_karyawan %}
+                <tr data-id="{{ karyawan.id }}">
+                    <td>{{ karyawan.nik }}</td>
+                    <td>{{ karyawan.nama }}</td>
+                    <td>{{ karyawan.jabatan }}</td>
+                    <td>
+                        <span class="badge {% if karyawan.status_karyawan == 'Aktif' %} bg-success {% else %} bg-danger {% endif %}">
+                            {{ karyawan.status_karyawan }}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{% url 'edit_data_karyawan' %}"><button class="btn btn-primary btn-sm"><i class="fas fa-pen"></i></button></a>
+                        <button class="btn btn-danger btn-sm btn-hapus" data-id="{{ karyawan.id }}">
+                            <i class="fas fa-trash"></i>
+                            <input type="hidden" id="csrfToken" value="{{ csrf_token }}">
+                        </button>
+                        <a href="#"><button class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button></a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">Tidak ada data karyawan.</td>
+                </tr>
+                {% endfor %}
             </tbody>
+            
+
         </table>
     </div>
+
     <nav>
         <ul class="pagination justify-content-center" id="pagination">
             <!-- Pagination akan diisi oleh JavaScript -->
@@ -59,74 +98,45 @@
     </nav>
 </div>
 
-
+{% comment %} JS Fitur search and filter {% endcomment %}
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const dataKaryawan = [
-            { nik: "351509080300042", nama: "Zahra Putri Fika", jabatan: "Kepala Divisi",status: "Aktif" },
-            { nik: "351509080400041", nama: "Harry Kurniawan", jabatan: "HRD",status: "Aktif" },
-            { nik: "351509080500052", nama: "Dina Anggraini", jabatan: "Staff Keuangan",status: "Aktif" },
-            { nik: "351509080600063", nama: "Rizky Pratama", jabatan: "IT Support",status: "Aktif" },
-            { nik: "351509080700074", nama: "Nadia Safitri", jabatan: "Marketing",status: "Aktif" },
-            { nik: "351509080800085", nama: "Rudi Hartono", jabatan: "Manager Operasional",status: "Aktif" },
-            { nik: "351509080300042", nama: "Zahra Putri Fika", jabatan: "Kepala Divisi",status: "Aktif" },
-            { nik: "351509080400041", nama: "Harry Kurniawan", jabatan: "HRD",status: "Tidak Aktif" },
-            { nik: "351509080500052", nama: "Dina Anggraini", jabatan: "Staff Keuangan",status: "Aktif" },
-            { nik: "351509080600063", nama: "Rizky Pratama", jabatan: "IT Support",status: "Tidak Aktif" },
-            { nik: "351509080700074", nama: "Nadia Safitri", jabatan: "Marketing",status: "Tidak Aktif" },
-            { nik: "351509080800085", nama: "Rudi Hartono", jabatan: "Manager Operasional",status: "Aktif" },
-            { nik: "351509080300042", nama: "Zahra Putri Fika", jabatan: "Kepala Divisi",status: "Aktif" },
-            { nik: "351509080400041", nama: "Harry Kurniawan", jabatan: "HRD",status: "Tidak Aktif" },
-            { nik: "351509080500052", nama: "Dina Anggraini", jabatan: "Staff Keuangan",status: "Aktif" },
-            { nik: "351509080600063", nama: "Rizky Pratama", jabatan: "IT Support",status: "Tidak Aktif" },
-            { nik: "351509080700074", nama: "Nadia Safitri", jabatan: "Marketing",status: "Aktif" },
-            { nik: "351509080800085", nama: "Rudi Hartono", jabatan: "Manager Operasional",status: "Tidak Aktif" }
-        ];
-
         const entriesSelect = document.getElementById("entries");
         const searchInput = document.getElementById("search");
+        const statusFilter = document.getElementById("statusFilter");
         const tableBody = document.getElementById("tableBody");
         const pagination = document.getElementById("pagination");
-        const statusFilter = document.getElementById("statusFilter");
-        let currentPage = 1;
         let rowsPerPage = parseInt(entriesSelect.value);
+        let currentPage = 1;
+        let allRows = Array.from(tableBody.getElementsByTagName("tr"));
 
-        function renderTable() {
-            tableBody.innerHTML = "";
-            let filteredData = dataKaryawan.filter(item =>
-                item.nama.toLowerCase().includes(searchInput.value.toLowerCase()) &&
-                (statusFilter.value === "" || item.status === statusFilter.value)
-            );
+        function filterAndRenderTable() {
+            let searchValue = searchInput.value.toLowerCase();
+            let statusValue = statusFilter.value;
 
-            let start = (currentPage - 1) * rowsPerPage;
-            let paginatedItems = filteredData.slice(start, start + rowsPerPage);
-
-            paginatedItems.forEach(item => {
-                let row = `<tr>
-                    <td>${item.nik}</td>
-                    <td>${item.nama}</td>
-                    <td>${item.jabatan}</td>
-                    <td>
-                        <span class="badge ${item.status === 'Aktif' ? 'bg-success' : 'bg-danger'}">
-                              ${item.status}
-                        </span>
-                     </td>
-                    <td>
-                        <a href="{% url 'edit_data_karyawan' %}"><button class="btn btn-primary btn-sm"><i class="fas fa-pen"></i></button></a>
-                        
-                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                        <a href="{% url 'detail_data_karyawan' %}"><button class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button></a>
-                       
-                    </td>
-                </tr>`;
-                tableBody.innerHTML += row;
+            let filteredRows = allRows.filter(row => {
+                let nama = row.cells[1].innerText.toLowerCase();
+                let status = row.cells[3].innerText.trim();
+                return nama.includes(searchValue) && (statusValue === "" || status === statusValue);
             });
-            renderPagination(filteredData.length);
+
+            currentPage = 1;
+            renderTable(filteredRows);
         }
 
-        function renderPagination(totalItems) {
+        function renderTable(filteredRows) {
+            tableBody.innerHTML = "";
+            let totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+            let start = (currentPage - 1) * rowsPerPage;
+            let paginatedRows = filteredRows.slice(start, start + rowsPerPage);
+
+            paginatedRows.forEach(row => tableBody.appendChild(row));
+
+            renderPagination(totalPages);
+        }
+
+        function renderPagination(totalPages) {
             pagination.innerHTML = "";
-            let totalPages = Math.ceil(totalItems / rowsPerPage);
             for (let i = 1; i <= totalPages; i++) {
                 let li = document.createElement("li");
                 li.classList.add("page-item");
@@ -134,7 +144,12 @@
                 li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
                 li.addEventListener("click", function () {
                     currentPage = i;
-                    renderTable();
+                    renderTable(allRows.filter(row => {
+                        let nama = row.cells[1].innerText.toLowerCase();
+                        let status = row.cells[3].innerText.trim();
+                        return nama.includes(searchInput.value.toLowerCase()) &&
+                            (statusFilter.value === "" || status === statusFilter.value);
+                    }));
                 });
                 pagination.appendChild(li);
             }
@@ -142,24 +157,33 @@
 
         entriesSelect.addEventListener("change", function () {
             rowsPerPage = parseInt(this.value);
-            currentPage = 1;
-            renderTable();
-        });
-        searchInput.addEventListener("input", function () {
-            currentPage = 1;
-            renderTable();
-        });
-        statusFilter.addEventListener("change", function () {
-            currentPage = 1;
-            renderTable();
+            filterAndRenderTable();
         });
 
-        renderTable();
+        searchInput.addEventListener("input", filterAndRenderTable);
+        statusFilter.addEventListener("change", filterAndRenderTable);
+
+        filterAndRenderTable();
+    });
+
+    //Js otomatis Capslock
+    document.addEventListener("DOMContentLoaded", function () {
+        const inputNama = document.getElementById("nama");
+        const inputJabatan = document.getElementById("jabatan");
+
+        if (inputNama) {
+            inputNama.addEventListener("input", function () {
+                this.value = this.value.toUpperCase();
+            });
+        }
+
+        if (inputJabatan) {
+            inputJabatan.addEventListener("input", function () {
+                this.value = this.value.toUpperCase();
+            });
+        }
     });
 </script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-
-
 {% endblock %}

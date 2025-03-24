@@ -1,234 +1,539 @@
 {% extends "base_template.html" %}
 {% block title %}Detail Data Karyawan{% endblock %} 
-
+{% load static %}
 {% block content %}
-<h2 class="fw-bold mb-1">
-    <i class="fas fa-users"></i>Detail Data Karyawan
-</h2>
-<style>
-    .profile-img {
-        width: 120px;
-        height: 120px;
-        object-fit: cover;
-        border-radius: 50%;  
-    }
-    .nav-tabs .nav-link.active {
-        background-color: #0d6efd;
-        color: white;
-        border-radius: 5px;
-    }
-</style>
-<!-- Tambahkan modal Bootstrap untuk menampilkan data karyawan -->
-<div class="container py-5">
-    <div class="card shadow-lg"> 
-        <div class="card-body">
-            <div class="row g-4">
-                <div class="col-md-3 text-center">
-                    <img src="https://storage.googleapis.com/a1aa/image/pdzGEAG6priCRwhpQSkdkFF0AxO9eMM5Qf_LBkKFAlQ.jpg"
-                        alt="Profile picture" class="profile-img">
-                    <h5 class="mt-3">CHACA PUTRI S.Kom</h5>
-                    <p class="text-muted">ID: 22080000235</p>
+
+<div class="container bg-white p-4 rounded shadow-lg mb-3">
+    <div class="row">
+        <h2 class="fw-bold mb-3">Detail Profile </h2> 
+
+        <!-- Profile Sidebar -->
+        <div class="col-md-4 text-center mb-3">
+            <div class="card p-4 shadow-sm">
+               <!-- Foto Profil -->
+                <div class="position-relative d-inline-block">
+                    <img id="profileImage" src="{% static 'img/alpin.jpg' %}" alt="Profile Picture" 
+                        class="rounded-circle shadow mb-4" width="150" height="150" style="object-fit: cover;">
+                    <!-- Input Upload -->
+                    <input type="file" id="profileutama" accept="image/*" class="d-none">
+                    <!-- Tombol Edit -->
+                    <label for="profileutama" 
+                        class="btn btn-light btn-sm rounded-circle position-absolute start-50 translate-middle-x bottom-0"
+                        style="transform: translate(25px, -20px) !important; background-color: #fff; padding: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
+                        <i class="fas fa-edit fs-5 text-dark"></i>
+                    </label>
                 </div>
-                <div class="col-md-9">
-                    <ul class="nav nav-tabs" id="employeeTab" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="identity-tab" data-bs-toggle="tab"
-                                data-bs-target="#identity" type="button" role="tab">Identitas</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="kontak-tab" data-bs-toggle="tab"
-                                data-bs-target="#kontak" type="button" role="tab">Informasi Kontak</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="datasuami-tab" data-bs-toggle="tab"
-                                data-bs-target="#datasuami" type="button" role="tab">Data
-                                Suami/Istri</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="dataanak-tab" data-bs-toggle="tab"
-                                data-bs-target="#dataanak" type="button" role="tab">Data Anak</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="dokumen-tab" data-bs-toggle="tab"
-                                data-bs-target="#dokumen" type="button" role="tab">Data Dokumen</button>
-                        </li>
-                    </ul>
-                    <div class="tab-content p-3">
-                        <div class="tab-pane fade show active" id="identity" role="tabpanel">
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label class="form-label">Nama</label>
-                                    <input type="text" class="form-control" value="">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Jabatan</label>
-                                    <input type="text" class="form-control" value="">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">NIK</label>
-                                    <input type="text" class="form-control" value="">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">ID Karyawan</label>
-                                    <input type="text" class="form-control" value="">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Nomor Induk Karyawan</label>
-                                    <input type="text" class="form-control" value="">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">NPWP</label>
-                                    <input type="text" class="form-control" value="">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Nomor BPJS</label>
-                                    <input type="text" class="form-control" value="">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Jenis Kelamin</label>
-                                    <input type="text" class="form-control" value="">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Tempat Tanggal Lahir</label>
-                                    <input type="text" class="form-control" value="">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Umur</label>
-                                    <input type="number" class="form-control" value="">
-                                </div>
-                                <div class="col-md-12">
-                                    <label class="form-label">Alamat</label>
-                                    <input type="text" class="form-control" value="">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Tanggal Masuk</label>
-                                    <input type="date" class="form-control" value="">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Tanggal Keluar</label>
-                                    <input type="date" class="form-control" value="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="kontak" role="tabpanel">
-                            <div class="col-md-6">
-                                <label class="form-label">Nomor Tlp.</label>
-                                <input type="text" class="form-control" value="">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-control" value="">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Facebook</label>
-                                <input type="text" class="form-control" value="">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Instagram</label>
-                                <input type="text" class="form-control" value="">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Twitter/X</label>
-                                <input type="text" class="form-control" value="">
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="datasuami" role="tabpanel">
-                            <div class="col-md-6">
-                                <label class="form-label">Nama Suami/Istri</label>
-                                <input type="text" class="form-control" value="">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Tempat lahir</label>
-                                <input type="text" class="form-control" value="">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Tanggal Lahir</label>
-                                <input type="date" class="form-control" value="">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Pendidikan Trakhir </label>
-                                <input type="text" class="form-control" value="">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">No Telp. </label>
-                                <input type="number" class="form-control" value="">
-                            </div>
-                        </div>
-                        <!-- Data Anak -->
-                        <div class="tab-pane fade" id="dataanak" role="tabpanel">
-                            <div class="col-md-6">
-                                <label class="form-label">Jumlah Anak</label>
-                                <select id="jumlahAnak" class="form-select">
-                                    <option value="0">Pilih jumlah anak</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
-                            </div>
-
-                            <!-- Container untuk form anak -->
-                            <div id="formAnakContainer"></div>
-
-                            <script>
-                                document.getElementById("jumlahAnak").addEventListener("change", function () {
-                                    let jumlah = parseInt(this.value);
-                                    let container = document.getElementById("formAnakContainer");
-                                    container.innerHTML = ""; // Reset form saat pilihan berubah
-
-                                    for (let i = 1; i <= jumlah; i++) {
-                                        let form = `
-                                        <div class="row mt-3 border p-3 rounded">
-                                            <h5 class="mb-3">Data Anak ${i}</h5>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Anak Ke-</label>
-                                                <input type="text" class="form-control" value="${i}" readonly>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Nama Anak</label>
-                                                <input type="text" class="form-control">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Tempat Lahir</label>
-                                                <input type="text" class="form-control">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Tanggal Lahir</label>
-                                                <input type="date" class="form-control">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Pendidikan Terakhir</label>
-                                                <input type="text" class="form-control">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">No Telp</label>
-                                                <input type="number" class="form-control">
-                                            </div>
-                                        </div>
-                                    `;
-                                        container.innerHTML += form;
-                                    }
-                                });
-                            </script>
-                        </div>
-                        <!-- Dokumen -->
-                        <div class="tab-pane fade" id="dokumen" role="tabpanel">
-                            <div class="col-md-6">
-                                <label class="form-label">KTP</label>
-                                <input type="file" class="form-control" value="">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Surat SK</label>
-                                <input type="file" class="form-control" value="">
-                            </div>
-                        </div>
-                    </div>
-                  
+            
+                <h5 class="fw-bold">CHACA PUTRI S.Kom</h5>
+                <div class="mt-3 d-flex justify-content-center gap-2">
+                    <button class="btn btn-primary btn-sm" id="btn-profil-1">Profil 1</button>
+                    <button class="btn btn-primary btn-sm" id="btn-profil-2">Profil 2</button>
+                </div>
+                <div class="mt-3 d-flex justify-content-center gap-2">  
+                    <button class="btn btn-secondary btn-sm">Cetak Profil</button>
                 </div>
             </div>
         </div>
+
+        <!-- Profile Details -->
+        <div class="col-md-8">
+            <div class="card p-4 shadow-sm">
+            {% comment %} Profile 1 {% endcomment %}
+            <div id="profil-1">
+                <ul class="nav nav-tabs mb-3 d-flex flex-nowrap">
+                    <li class="nav-item"><a class="nav-link active" href="#" data-target="identitas">Identitas Karyawan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-target="kontak">Informasi Kontak</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-target="data_suami_istri">Data Suami/Istri</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-target="data_anak">Data Anak</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-target="dokumen">Dokumen</a></li>
+                </ul>
+              
+
+                <!-- Halaman Identitas Karyawan -->
+                <div class="tab-content active" id="identitas">
+                    <h4 class="mb-3"><i class="fas fa-id-badge"></i> Identitas Karyawan</h4>
+                    <div class="row g-3">
+                        <div class="col-md-6"><label class="form-label">Nama</label><input type="text" class="form-control" value="Chaca Putri"></div>
+                        <div class="col-md-6"><label class="form-label">Jabatan</label><input type="text" class="form-control" value="SDM"></div>
+                        <div class="col-md-6"><label class="form-label">NIK</label><input type="text" class="form-control" value="19865874556475"></div>
+                        <div class="col-md-6"><label class="form-label">No Induk Karyawan</label><input type="text" class="form-control" value="22080000235"></div>
+                        <div class="col-md-6"><label class="form-label">NPWP</label><input type="text" class="form-control" value="22080000235"></div>
+                        <div class="col-md-6"><label class="form-label">Nomor BPJS</label><input type="text" class="form-control" value="0032870160291"></div>
+                        <div class="col-md-6">
+                            <label class="form-label">Jenis Kelamin</label>
+                            <select class="form-control">
+                                <option value="Laki-laki">Laki-laki</option>
+                                <option value="Perempuan" selected>Perempuan</option>
+                            </select>
+                        </div>                       
+                        <div class="col-md-6"><label class="form-label">Tempat Lahir</label><input type="date" class="form-control" value="Perempuan"></div>
+                        <div class="col-md-6"><label class="form-label">Tanggal Lahir</label><input type="text" class="form-control" value="Perempuan"></div>
+                        <div class="col-md-6"><label class="form-label">Umur</label><input type="text" class="form-control" value="Perempuan"></div>
+                        <div class="col-md-6">
+                            <label class="form-label">Alamat</label>
+                            <textarea class="form-control" rows="3">Perempuan</textarea>
+                        </div>                       
+                        <div class="col-md-6"><label class="form-label">status Karyawan</label><input type="text" class="form-control" value="Perempuan"></div>
+                        <div class="col-md-6"><label class="form-label">Tanggal Masuk</label><input type="date" class="form-control" value="Perempuan"></div>
+                        <div class="col-md-6"><label class="form-label">Tanggal Keluar</label><input type="date" class="form-control" value="Perempuan"></div>
+                    </div>
+                </div>
+
+                <!-- Halaman Informasi Kontak -->
+                <div class="tab-content" id="kontak">
+                    <h4 class="mb-3"><i class="fas fa-phone"></i> Informasi Kontak</h4>
+                    <div class="row g-3">
+                        <div class="col-md-6"><label class="form-label">Email</label><input type="email" class="form-control" value="chaca@email.com"></div>
+                        <div class="col-md-6"><label class="form-label">No. Telepon</label><input type="number" class="form-control" value="+62 812 3456 7890"></div>
+                        <div class="col-md-6"><label class="form-label">Instagram</label><input type="text" class="form-control" value="Rungkut Asri, Surabaya"></div>
+                        <div class="col-md-6"><label class="form-label">Facebook</label><input type="text" class="form-control" value="Rungkut Asri, Surabaya"></div>
+                        <div class="col-md-6"><label class="form-label">Twitter</label><input type="text" class="form-control" value="Rungkut Asri, Surabaya"></div>
+                    </div>
+                </div>
+                {% comment %} Informasi Suami {% endcomment %}
+                <div class="tab-content" id="data_suami_istri">
+                    <h4 class="mb-3"><i class="fas fa-user"></i> Data Suami/Istri</h4>
+                    <div class="row g-3">
+                        <div class="d-flex flex-column align-items-center position-relative">
+                            <!-- Gambar Profil -->
+                            <img id="profildatasuami" src="{% static 'img/alpin.jpg' %}" 
+                                 alt="ini foto" class="rounded-circle border shadow-sm" 
+                                 style="width: 150px; height: 150px; object-fit: cover;">
+                        
+                            <!-- Input File (Hidden) -->
+                            <input type="file" id="profiledatasuami" accept="image/*" class="d-none">
+                        
+                            <!-- Tombol Edit (Di Atas Gambar) -->
+                            <label for="profiledatasuami" class="btn btn-light btn-sm  position-absolute" 
+                                   style="bottom: 0; right: 0; transform: translate(-150px, -50px); padding: 8px;">
+                                <i class="fas fa-edit fs-5 text-dark"></i>Edit Foto
+                            </label>
+                        </div>
+                        <div class="col-md-6"><label class="form-label">Nama</label><input type="text" class="form-control" value="chaca@email.com"></div>
+                        <div class="col-md-6"><label class="form-label">Tempat Lahir</label><input type="text" class="form-control" value="+62 812 3456 7890"></div>
+                        <div class="col-md-6"><label class="form-label">Tanggal Lahir</label><input type="date" class="form-control" value="Rungkut Asri, Surabaya"></div>
+                        <div class="col-md-6"><label class="form-label">Pendidikan Trakhir</label><input type="text" class="form-control" value="Rungkut Asri, Surabaya"></div>
+                        <div class="col-md-6"><label class="form-label">No Telp.</label><input type="number" class="form-control" value="Rungkut Asri, Surabaya"></div>
+                    </div>
+                </div>
+                {% comment %} data anak {% endcomment %}
+                <div class="tab-content" id="data_anak">
+                    <h4 class="mb-3"><i class="fas fa-user"></i> Data Anak</h4>
+                    <label class="form-label mb-2">Anak Ke-</label>
+                    <select id="jumlahAnak" class="form-control">
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+
+                <div id="anakContainer" class="mt-3">
+                    <!-- Form anak akan ditambahkan di sini -->
+                </div>
+
+                </div>
+                {% comment %} Dokumen {% endcomment %}
+                <div class="tab-content" id="dokumen">
+                    <h4 class="mb-3"><i class="fa fa-file-contract"></i>Dokumen</h4>
+                    <div class="row g-3">
+                        <!-- Kartu Keluarga -->
+                        <div class="col-md-6">
+                            <label class="form-label">Kartu Keluarga</label>
+                            <input type="file" class="form-control" accept="image/*" id="kkUpload">
+                            <img id="kkPreview" src="" alt="Preview Kartu Keluarga" class="img-thumbnail mt-2 d-none" style="width: 80%;">
+                        </div>
+                    
+                        <!-- KTP -->
+                        <div class="col-md-6">
+                            <label class="form-label">KTP</label>
+                            <input type="file" class="form-control" accept="image/*" id="ktpUpload">
+                            <img id="ktpPreview" src="" alt="Preview KTP" class="img-thumbnail mt-2 d-none" style="width: 80%;">
+                        </div>
+                    
+                        <!-- Kartu BPJS -->
+                        <div class="col-md-6">
+                            <label class="form-label">Kartu SK</label>
+                            <input type="file" class="form-control" accept="image/*" id="skUpload">
+                            <img id="skPreview" src="" alt="Preview SK" class="img-thumbnail mt-2 d-none" style="width: 80%;">
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+
+            {% comment %} End Profile 1 {% endcomment %}
+
+            {% comment %} PROFILE 2  {% endcomment %}
+            <div id="profil-2" style="display: none;">
+                <ul class="nav nav-tabs mb-3 d-flex flex-nowrap">
+                    <li class="nav-item"><a class="nav-link active" href="#" data-target-profile="riwayat_jabatan">Riwayat Jabatan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-target-profile="riwayat_pendidikan">Riwayat Pendidikan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-target-profile="riwayat_pendidikan_non_formal">Riwayat Pendidikan Non Formal</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-target-profile="riwayat_prestasi">Riwayat Prestasi</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-target-profile="riwayat_pelanggaran">Riwayat Pelanggaran</a></li>
+                </ul>
+
+                <div id="riwayat_jabatan" class="profile-section">
+                    <button class="btn btn-primary mb-4 btn-load-modal" data-url="{% url 'modal_riwayat_jabatan' %}">
+                        <i class="fas fa-plus me-2"></i> Tambah Riwayat Jabatan
+                    </button> 
+                      
+                    <div class="table-responsive">
+                        <table class="table table-bordered bg-white">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Dokumen SK</th>
+                                    <th>Jabatan</th>
+                                    <th>No. SK</th>
+                                    <th>Masa Kerja</th>
+                                    <th>Tanggal Mulai</th>
+                                    <th>Tanggal Akhir</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><button class="btn btn-sm btn-info text-white"><i class="fas fa-file-alt"></i></button></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                {% comment %} riwayat_pendidikan_non_formal {% endcomment %}
+                <div id="riwayat_pendidikan" class="profile-section d-none">
+                    <button class="btn btn-primary mb-4 btn-load-modal" data-url="{% url 'modal_riwayat_pendidikan' %}">
+                        <i class="fas fa-plus me-2"></i> Tambah Riwayat Pendidikan
+                    </button>
+                    <div class="table-responsive">
+                        <table class="table table-bordered bg-white">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Dokumen SK</th>
+                                    <th>No STTB</th>
+                                    <th>Judul</th>
+                                    <th>Lembaga</th>
+                                    <th>Tanggal Mulai</th>
+                                    <th>Tanggal Selesai</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><button class="btn btn-sm btn-info text-white"><i class="fas fa-file-alt"></i></button></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                {% comment %} Riwayat Pendidikan Non Formal {% endcomment %}
+                <div id="riwayat_pendidikan_non_formal" class="profile-section d-none">
+                    <button class="btn btn-primary mb-4 btn-load-modal" data-url="{% url 'modal_riwayat_non_formal' %}">
+                        <i class="fas fa-plus me-2"></i> Tambah Riwayat Non Formal
+                    </button>
+                    <div class="table-responsive">
+                        <table class="table table-bordered bg-white">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Dokumen</th>
+                                    <th>NO STTP</th>
+                                    <th>Judul</th>
+                                    <th>Lembaga</th>
+                                    <th>Tanggal Mulai</th>
+                                    <th>Tanggal Selesai</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><button class="btn btn-sm btn-info text-white"><i class="fas fa-file-alt"></i></button></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div id="riwayat_prestasi" class="profile-section d-none">
+                    <button class="btn btn-primary mb-4 btn-load-modal" data-url="{% url 'modal_riwayat_prestasi' %}">
+                        <i class="fas fa-plus me-2"></i> Tambah Riwayat Prestasi
+                    </button>
+                    <div class="table-responsive">
+                        <table class="table table-bordered bg-white">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Dokumen</th>
+                                    <th>No. SK</th>
+                                    <th>Tanggal SK</th>
+                                    <th>Tahun</th>
+                                    <th>Jenis</th>
+                                    <th>Pemberi Peghargaan</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><button class="btn btn-sm btn-info text-white"><i class="fas fa-file-alt"></i></button></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div id="riwayat_pelanggaran" class="profile-section d-none">
+                    <button class="btn btn-primary mb-4 btn-load-modal" data-url="{% url 'modal_riwayat_pelanggaran' %}">
+                        <i class="fas fa-plus me-2"></i> Tambah Riwayat Pelanggaran
+                    </button>
+                    <div class="table-responsive">
+                        <table class="table table-bordered bg-white">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Dokumen SK</th>
+                                    <th>No. SK</th>
+                                    <th>Tanggal SK</th>
+                                    <th>TMT SK</th>
+                                    <th>Jenis</th>
+                                    <th>Permasalahan</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><button class="btn btn-sm btn-info text-white"><i class="fas fa-file-alt"></i></button></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+             {% comment %} End PROFILE 2  {% endcomment %}
+
+                <div class="d-flex justify-content-end mt-4">
+                    <button class="btn btn-secondary me-2">Batal</button>
+                    <button class="btn btn-primary">Simpan Perubahan</button>
+                </div>
+            </div>
+        </div>
+
+        
     </div>
 </div>
 
+{% comment %} Penambahan anak {% endcomment %}
+<script>
+    // penambahan data anak
+    function generateForm(index) {
+        return `
+        <div class="border p-3 mb-3 rounded" id="formAnak${index}">
+            <h6 class="fw-bold">Anak Ke-${index + 1}</h6>
+
+            <div class="row g-3">
+                <div class="d-flex flex-column align-items-center position-relative">
+                    <!-- Gambar Profil -->
+                    <img id="profildataanak${index}" src="{% static 'img/alpin.jpg' %}" 
+                        alt="ini foto" class="rounded-circle border shadow-sm" 
+                        style="width: 150px; height: 150px; object-fit: cover;">
+                    
+                    <!-- Input File (Hidden) -->
+                    <input type="file" id="profiledataanak${index}" accept="image/*" class="d-none">
+                    
+                    <!-- Tombol Edit -->
+                    <label for="profiledataanak${index}" class="btn btn-light btn-sm position-absolute" 
+                        style="bottom: 0; right: 0; transform: translate(-150px, -50px); padding: 8px;">
+                        <i class="fas fa-edit fs-5 text-dark"></i> Edit Foto
+                    </label>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Nama</label>
+                    <input type="text" class="form-control" value="">
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Tempat Lahir</label>
+                    <input type="text" class="form-control" value="">
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Tanggal Lahir</label>
+                    <input type="date" class="form-control" value="">
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Jenis Kelamin</label>
+                    <select class="form-control">
+                        <option value="Laki-laki">Laki-laki</option>
+                        <option value="Perempuan">Perempuan</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">No Telp.</label>
+                    <input type="number" class="form-control" value="">
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Status</label>
+                    <input type="text" class="form-control" value="">
+                </div>
+            </div>
+        </div>`;
+    }
+
+    function updateForms() {
+        const jumlahAnak = parseInt(document.getElementById("jumlahAnak").value);
+        const anakContainer = document.getElementById("anakContainer");
+        anakContainer.innerHTML = ""; // Kosongkan form sebelumnya
+
+        for (let i = 0; i < jumlahAnak; i++) {
+            anakContainer.innerHTML += generateForm(i);
+        }
+
+        // Tambahkan event listener untuk preview gambar
+        for (let i = 0; i < jumlahAnak; i++) {
+            document.getElementById(`profiledataanak${i}`).addEventListener("change", function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById(`profildataanak${i}`).src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+    }
+
+    // Set default 1 form anak saat halaman pertama kali dimuat
+    document.addEventListener("DOMContentLoaded", updateForms);
+
+    // Update form saat dropdown berubah
+    document.getElementById("jumlahAnak").addEventListener("change", updateForms);
+</script>
+
+<script>
+    // Preview pada Dokumen
+        function previewImage(inputId, previewId) {
+            document.getElementById(inputId).addEventListener('change', function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const preview = document.getElementById(previewId);
+                        preview.src = e.target.result;
+                        preview.classList.remove("d-none");
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        // Panggil fungsi untuk setiap input
+        previewImage("kkUpload", "kkPreview");
+        previewImage("ktpUpload", "ktpPreview");
+        previewImage("skUpload", "skPreview");
+
+        
+        $(document).ready(function() {
+            $("button[data-target-profile]").click(function() {
+                let target = $(this).data("target-profile");
+                $(".profile-section").addClass("d-none"); 
+                $("#" + target).removeClass("d-none");
+            });
+        });
+
+        //Selection Profile 2
+        $(document).ready(function() {
+            $("a[data-target-profile]").click(function(e) {
+                e.preventDefault(); // Hindari reload halaman
+                let target = $(this).data("target-profile");
+        
+                // Sembunyikan semua profile section
+                $(".profile-section").addClass("d-none"); 
+        
+                // Tampilkan hanya elemen yang dipilih
+                $("#" + target).removeClass("d-none");
+        
+                // Update tampilan tab yang aktif
+                $("a[data-target-profile]").removeClass("active");
+                $(this).addClass("active");
+            });
+        });
+
+        // Modal Input data riwayat
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".btn-load-modal").forEach(button => {
+                button.addEventListener("click", function () {
+                    let modalURL = this.getAttribute("data-url");
+        
+                    fetch(modalURL)
+                        .then(response => response.text())
+                        .then(html => {
+                            document.getElementById("modalContainer").innerHTML = html;
+        
+                            // Tunggu hingga elemen modal termuat di DOM
+                            setTimeout(() => {
+                                let modalElement = document.querySelector(".modal.fade");
+                                if (modalElement) {
+                                    let modal = new bootstrap.Modal(modalElement);
+                                    modal.show();
+                                }
+                            }, 100);
+                        })
+                        .catch(error => console.error("Gagal memuat modal:", error));
+                });
+            });
+        });
+
+        
+           
+</script>
+
+<div id="modalContainer"></div>        
 {% endblock  %}

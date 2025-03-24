@@ -1,0 +1,23 @@
+.nav-tabs .nav-link:hover {
+    color: blue !important;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: blue !important;
+    color: white !important;
+    border-color: blue !important;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+.nav-tabs {
+display: flex;
+flex-wrap: nowrap;
+overflow-x: auto;
+white-space: nowrap;
+}

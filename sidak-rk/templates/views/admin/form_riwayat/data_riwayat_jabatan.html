@@ -1,0 +1,315 @@
+{% extends "base_template.html" %}
+{% load static %}
+{% block title %}Data Riwayat Jabatan{% endblock %}
+{% block content %}
+
+<h2 class="mb-4"><i class="fas fa-tachometer-alt me-2"></i> Data Riwayat Jabatan</h2>
+
+<div class="container bg-white p-4 rounded shadow">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3">
+        <div class="d-flex align-items-center mb-2 mb-md-0">
+            <label for="entries" class="me-2 fw-bold">Tampilkan</label>
+            <select id="entries" class="form-select w-auto">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+            </select>
+        </div>
+        <div class="input-group w-50 mb-2 mb-md-0">
+            <input type="text" id="searchInput" class="form-control" placeholder="Cari">
+        </div>
+
+        <button class="btn btn-success btn-sm" onclick="openModal()">
+            <i class="fa fa-plus"></i> Input Data
+        </button>
+    </div>
+
+    <table class="table table-bordered table-striped text-center" id="dataTable">
+        <thead class="table-primary">
+            <tr>
+                <th>No</th>
+                <th>Karyawan</th>
+                <th>Jabatan</th>
+                <th>No. SK</th>
+                <th>Dokumen SK</th>
+                <th>Tanggal Mulai</th>
+                <th>Tanggal Akhir</th>
+                <th>Masa Jabatan</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if data_riwayat_jabatan %}
+            {% for item in data_riwayat_jabatan %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ item.karyawan.nama }}</td>
+                <td class="small">{{ item.jabatan }}</td>
+                <td>{{ item.no_sk }}</td>
+                <td>
+                    {% if item.dokumen_sk %}
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalDokumen{{ forloop.counter }}">
+                        Lihat Dokumen
+                    </a>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="modalDokumen{{ forloop.counter }}" tabindex="-1"
+                        aria-labelledby="modalDokumenLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Dokumen SK</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    {% if item.dokumen_sk.url|lower|slice:"-3:" == "jpg" or item.dokumen_sk.url|lower|slice:"-3:" == "png" or item.dokumen_sk.url|lower|slice:"-4:" == "jpeg" %}
+                                    <img src="{{ item.dokumen_sk.url }}" class="img-fluid" style="max-width: 100%;">
+                                    {% else %}
+                                    <iframe src="{{ item.dokumen_sk.url }}" width="100%" height="400px"></iframe>
+                                    {% endif %}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Tutup</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    Tidak Ada
+                    {% endif %}
+                </td>
+
+                <td>
+                    <span class="badge bg-primary">{{ item.tanggal_mulai|date:"d M Y" }}</span>
+                </td>
+                <td>
+                    {% if item.tanggal_akhir %}
+                    <span class="badge bg-primary">{{ item.tanggal_akhir|date:"d M Y" }}</span>
+                    {% else %}
+                    <span class="badge bg-success">Sekarang</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if not item.tanggal_akhir %}
+                    <span class="badge bg-success">Masih Menjabat</span>
+                    {% else %}
+                    <span class="badge bg-secondary">{{ item.masa_jabatan }}</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <button class="btn btn-warning btn-sm btn-edit" data-id="{{ item.id }}"
+                        data-karyawan="{{ item.karyawan.id }}" data-jabatan="{{ item.jabatan }}"
+                        data-no_sk="{{ item.no_sk }}" data-tanggal_mulai="{{ item.tanggal_mulai }}"
+                        data-tanggal_akhir="{{ item.tanggal_akhir }}">
+                        <i class="fa fa-edit"></i>
+                    </button>
+
+                    <button class="btn btn-danger btn-sm btn-delete" data-id="{{ item.id }}">
+                        <i class="fa fa-trash"></i>
+                    </button>
+
+                </td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="7">Tidak ada data</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+
+
+    <div class="d-flex justify-content-between align-items-center">
+        <span id="tableInfo"></span>
+        <nav>
+            <ul class="pagination" id="pagination"></ul>
+        </nav>
+    </div>
+</div>
+
+<!-- Modal Input -->
+<div class="modal fade" id="inputDataModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Tambah Riwayat Jabatan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" enctype="multipart/form-data" id="formRiwayatJabatan">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="karyawan" class="form-label">Karyawan</label>
+                        <select id="karyawan" name="karyawan" class="form-control select2" required>
+                            <option value="" disabled selected>-- Pilih Karyawan --</option>
+                            {% for karyawan in karyawan_list %}
+                            <option value="{{ karyawan.id }}">{{ karyawan.nama }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="jabatan" class="form-label">Jabatan</label>
+                        <select id="jabatan" name="jabatan" class="form-select" required>
+                            <option value="" disabled selected>-- Pilih Jabatan --</option>
+                            {% for jabatan in daftar_jabatan %}
+                            <option value="{{ jabatan }}">{{ jabatan }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="no_sk" class="form-label">No. SK</label>
+                        <input type="text" id="no_sk" name="no_sk" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dokumen_sk" class="form-label">Dokumen SK</label>
+                        <input type="file" id="dokumen_sk" name="dokumen_sk" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="tanggal_mulai" class="form-label">Tanggal Mulai</label>
+                        <input type="date" id="tanggal_mulai" name="tanggal_mulai" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tanggal_akhir" class="form-label">Tanggal Akhir</label>
+                        <p class="small">Optional Tidak Di Isi Jika Masih Menjabat</p>
+                        <input type="date" id="tanggal_akhir" name="tanggal_akhir" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Tambah</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Edit -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Riwayat Jabatan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" id="editId" name="id">
+
+                    <div class="mb-3">
+                        <label for="editKaryawan" class="form-label">Karyawan</label>
+                        <select id="editKaryawan" name="karyawan" class="form-control select2" required>
+                            <option value="" disabled selected>-- Pilih Karyawan --</option>
+                            {% for karyawan in karyawan_list %}
+                            <option value="{{ karyawan.id }}">{{ karyawan.nama }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editJabatan" class="form-label">Jabatan</label>
+                        <select id="editJabatan" name="jabatan" class="form-select" required>
+                            <option value="" disabled selected>-- Pilih Jabatan --</option>
+                            {% for jabatan in daftar_jabatan %}
+                            <option value="{{ jabatan }}">{{ jabatan }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editNoSk" class="form-label">No. SK</label>
+                        <input type="text" id="editNoSk" name="no_sk" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editDokumenSk" class="form-label">Dokumen SK</label>
+                        <input type="file" id="editDokumenSk" name="dokumen_sk" class="form-control">
+                        <p class="small text-muted">Kosongkan jika tidak ingin mengganti dokumen</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editTanggalMulai" class="form-label">Tanggal Mulai</label>
+                        <input type="date" id="editTanggalMulai" name="tanggal_mulai" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editTanggalAkhir" class="form-label">Tanggal Akhir</label>
+                        <p class="small">Optional, tidak diisi jika masih menjabat</p>
+                        <input type="date" id="editTanggalAkhir" name="tanggal_akhir" class="form-control">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Simpan Perubahan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Load jQuery dan Select2 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+{% for message in messages %}
+<script>
+    Swal.fire({
+        icon: "{% if message.tags == 'success' %}success{% else %}error{% endif %}",
+        title: "{% if message.tags == 'success' %}Berhasil{% else %}Gagal{% endif %}",
+        text: "{{ message }}",
+        showConfirmButton: false,
+        timer: 3000
+    });
+</script>
+{% endfor %}
+
+<script>
+    //Modal Input Form
+    function openModal() {
+        var modal = new bootstrap.Modal(document.getElementById('inputDataModal'));
+        modal.show();
+    }
+
+    // Select 2 Data Karyawan
+    $(document).ready(function () {
+        $('#selectRiwayatJabatan').select2({
+            placeholder: "Pilih Karyawan...",
+            allowClear: true,
+            minimumInputLength: 1,
+            ajax: {
+                url: "/api/karyawan/",
+                dataType: "json",
+                delay: 250,
+                data: function (params) {
+                    console.log("🔎 Query dikirim ke API:", params.term);
+                    return {
+                        search: params.term
+                    };
+                },
+                processResults: function (data) {
+                    console.log("📌 Data diterima dari API:", data);
+                    return {
+                        results: data.results.map(item => ({
+                            id: item.id,
+                            text: item.text
+                        }))
+                    };
+                },
+                cache: true
+            }
+        });
+
+        // Reinitialize Select2 ketika modal dibuka
+        $('#inputDataModal').on('shown.bs.modal', function () {
+            $('#selectRiwayatJabatan').select2({
+                dropdownParent: $('#inputDataModal')
+            });
+        });
+    });
+</script>
+
+
+{% endblock %}

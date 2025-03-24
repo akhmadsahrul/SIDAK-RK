@@ -1,0 +1,46 @@
+<div class="modal fade" id="modalRiwayatPelanggaran" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tambah Riwayat Pelanggaran</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formRiwayatPelanggaran">
+                    <div class="mb-3">
+                        <label class="form-label">Dokumen SK</label>
+                        <input type="file" class="form-control" name="dokumen_sk">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">No. SK</label>
+                        <input type="text" class="form-control" name="no_sk" placeholder="Masukkan nomor SK">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tanggal SK</label>
+                        <input type="date" class="form-control" name="tanggal_sk">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">TMT SK</label>
+                        <input type="date" class="form-control" name="tmt_sk">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Jenis</label>
+                        <select class="form-control" name="jenis">
+                            <option value="" selected disabled>Pilih jenis pelanggaran</option>
+                            <option value="Ringan">Ringan</option>
+                            <option value="Sedang">Sedang</option>
+                            <option value="Berat">Berat</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Permasalahan</label>
+                        <textarea class="form-control" name="permasalahan" placeholder="Jelaskan permasalahan"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </form>
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
